@@ -1,0 +1,44 @@
+training: !!bool "true"
+device: "cuda"
+unprocessed_data: '../ghostnet/data/timit/data/*/*/*/*.wav'
+uid: 'TISV_20210717' # change randomly
+---
+data:
+    train_path: './dataset/train_tisv'
+    train_path_unprocessed: '../ghostnet/data/timit/data/TRAIN/*/*/*.wav'
+    test_path: './dataset/test_tisv'
+    test_path_unprocessed: '../ghostnet/data/timit/data/TEST/*/*/*.wav'
+    data_preprocessed: !!bool "true" 
+    sr: 16000
+    nfft: 512 #For mel spectrogram preprocess
+    window: 0.025 #(s) 400
+    hop: 0.01 #(s) 160
+    nmels: 40 # Number of mel energies
+    nmfccs: 40 # Number of mel energies
+    tisv_frame: 180 #Max number of time steps in input after preprocess
+---
+model:
+    input_size: 1 
+    feature_size: 512 # Embedding size
+    model_path: './speech_id_checkpoint/model.model' #Model path for testing, inference, or resuming training
+---
+train:
+    N: 4 #Number of speakers in batch
+    M: 8 #Number of utterances per speaker
+    num_workers: 0 #number of workers for dataloader
+    lr: 0.01
+    gamma: 0.3
+    ge2e_gamma: 1
+    milestones: [350, 600, 850]
+    epochs: 1000 #Max training speaker epoch 
+    log_interval: 50 #Epochs before printing progress
+    eer_interval: 10 #Epochs before printing progress
+    checkpoint_interval: 120 #Save model after x speaker epochs
+    checkpoint_dir: './speech_id_checkpoint'
+    restore: !!bool "false" #Resume training from previous model path
+---
+test:
+    N: 4 #Number of speakers in batch
+    M: 6 #Number of utterances per speaker
+    num_workers: 4 #number of workers for data laoder
+    epochs: 20 #testing speaker epochs
