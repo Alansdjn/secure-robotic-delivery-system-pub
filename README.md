@@ -27,9 +27,11 @@
 Fig. 1 and Fig. 2 show how the system work. For more details please read the project&#39;s paper.
 
 ![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/system_model.png)
+
 Figure 1. The proposed robotic delivery system
 
 ![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/The_offline_authentication_approaches_of_the_proposed_system.png)
+
 Figure 2. Details of off-line authentication scheme
 
 ## **1. Explanation of files**
@@ -39,7 +41,9 @@ Figure 2. Details of off-line authentication scheme
 This folder is for PIN code recogination in the cooperative authentication of our system.
 
 **generate_train_data.py**: This file generates the pre-converted trainging images for CNN model.
+
 **train_cnn.py**: is used for training the CNN model.
+
 **tune_xgboost_ray.py**: We use Tune Ray framework to tune the hyperparameters of XGBoost classifier.
 
 **core**: This folder contains the basic functions which are used by _train_cnn.py_ and _tune_xgboost_ray.py_ and _generate_train_data.py_. 
@@ -56,15 +60,25 @@ This folder is for PIN code recogination in the cooperative authentication of ou
 This folder includes implementations of the voiceprint verification in the cooperative module used in the proposed scheme.
 
 **data_preprocess.py**: is used to process data.
+
 **dataset.py**: defines the dataloader.
+
 **ge2e_loss.py**: The loss function used to train the model.
+
 **ghostnet.py**: The definition of Ghostnet model.
+
 **hparam.py**: Functions used to process parameters defined in _config/config.yaml_.
+
 **hpc.sh**: This is the HPC platform script.
+
 **main.py**: is used to test the voiceprint verification submodule.
+
 **train.py**: Train the Ghostnet.
+
 **utils.py**: Help functions used in this module.
+
 **config/config.yaml**: Defines the configration of this module.
+
 **speech_id_checkpoint**: This folder is used to store the trained model.
 
 ### C. mobilefacenet_sge
@@ -72,7 +86,9 @@ This folder includes implementations of the voiceprint verification in the coope
 This folder includes implementations of our system&#39;s non-cooperative authentication. 
 
 **eval.py**: evaluates the result of the trained model.
+
 **main.py**: test the face verification submodule.
+
 **train.py**: is used to train the mobilefacenet model.
 
 **core**: 
