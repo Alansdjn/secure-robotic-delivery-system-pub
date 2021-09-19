@@ -189,7 +189,7 @@ Figure 3. run the system
 
 When the authentication process is triggered, the robot will run the PIN code verification. To complete the PIN code verification, the process can be further divided into 6 steps which are shown in Figure 4. The first 3 steps are used to collect and pre-process data. The robot records audio and splits it into segments. Then, convert them to Mel spectrograms. The followed 2 steps are in charge of extracting features using a CNN network, and classifying the features to 10 digit classes using XGBoost classifier. The last step joins the digits together, and check if it is correct.
 
-![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig3.png)
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig4.png)
 
 Figure 4. Steps of PIN code verification
 
@@ -212,7 +212,7 @@ To finish the face verification, there are 4 major steps:
 
 In this section, we proposed an improved MobileFaceNet to extract features.
 
-![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig5.png)
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig6.png)
 
 Figure 6. Face verification
 
