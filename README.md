@@ -14,15 +14,17 @@
 
 1. Explanation of files in project _An AI-driven Secure and Intelligent Robotic Delivery System_.
 
-2. Guidance of simple experiment.
-
-3. Guidance of system implementation (demo).
+2. Guidance of system implementation.
 
 **Datasets:**
-[TIMIT](https://github.com/philipperemy/timit)
-[Speech Commands](https://arxiv.org/abs/1804.03209)
-[CASIA-WebFace](https://arxiv.org/pdf/1411.7923v1.pdf)
-[Labeled Faces in the Wild (LFW)](http://vis-www.cs.umass.edu/lfw/)
+
+- [Speech Commands](https://arxiv.org/abs/1804.03209): As the PIN code is consists of digit numbers only, we only selected a subset of the whole commands, i.e., 0, 1, 2 up to 9 from the speech commands data set.
+
+- [TIMIT](https://github.com/philipperemy/timit)
+
+- [CASIA-WebFace](https://arxiv.org/pdf/1411.7923v1.pdf)
+
+- [Labeled Faces in the Wild (LFW)](http://vis-www.cs.umass.edu/lfw/)
 
 Fig. 1 and Fig. 2 show how the system work. For more details please read the project&#39;s paper.
 
@@ -57,7 +59,7 @@ This folder is for PIN code recogination in the cooperative authentication of ou
 
 ### B. speaker_verification_ghostnet
 
-This folder includes implementations of the voiceprint verification in the cooperative module used in the proposed scheme.
+This folder includes implementations of the voiceprint verification in the cooperative module which are used in the proposed scheme.
 
 **data_preprocess.py**: is used to process data.
 
@@ -114,222 +116,120 @@ This part introduces the files which are runned on the robot, server and client 
 
 **client**: receive PIN code from the server.
 
-----
-## **2. Guidance of simple experiment**
-
-### Ⅰ. Formal Security Analysis in Cooperative Authentication
-
-Put verifier.pv in folder that contains proverif.exe.
-
-Open command (CMD).
-
-Change the current working directory into the folder that has proverif.exe.
-
-Insert the command &quot;_proverif verifier.pv_&quot; and press enter.
-
-### Ⅱ. Non-cooperative authentication&#39;s simulation in Jupyter
-
-Put the CUHK01 dataset under &quot;/data/&quot;, and run classify.py to add the training set and test set open any Jupyter file and run it directly. However, training and testing could be very time-consuming. We can also see the result of previous running directly in Jupyter files.
-
-This part&#39;s work is briefly introduced in the video:
-
-https://www.youtube.com/watch?v=zgD6tC4vGLM
-
-## **3. Guidance of system implementation (demo).**
+## **2. Guidance of system implementation.**
 
 We will introduce the environmental requirements, and how to run the demo.
 
 ### Ⅰ. Environmental requirements:
 
-#### **a. Cooperative off-line authentication:**
+Table 1 shows the implementation environment of the proposed scheme. We use two laptops as the client and the server, and Turtlebot3 as the robot. Here, a Macbook with MacOS 11.04 is used as a client, we install Ubuntu 18.04 on the server and Ubuntu mate 18.04 on the robot. Ubuntu 18.04 can be download from the [TurtleBot offical website](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/). The ROS we choose melodic, althouth we do not use ROS in out project. This is because the bounded OS supports the 3rd party libraries used in this project. All implementions in the experiment were developed using python based on the pytorch framework.  _virtualenv_ is utilized for building the Python 3 virtual environment in three devices, and the Python version is 3.7. Training and testing were carried out on the High Performance Computing (HPC) platform in the University of Sheffield, running on NVIDIA K80 GPU. The utilized datasets are listed in previous section. 
 
-Table 1 shows the implementation environment of cooperative authentication. We can use two laptops as the client and the server, and Turtlebot3 as the robot. Here we install Ubuntu 16.04 in the client and the server and Ubuntu mate 16.04 in the robot. Then utilize ROS kinetic, which is recommended in Turtlebot3 and supports Python 2, in the server and the robot and set the server as the master.
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/tab1.png)
 
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/tab1.png)
-
-Table 1. Implementation environment of cooperative authentication
-
-#### **b. Non-cooperative off-line authentication:**
-
-The following table shows the implementation environment of non-cooperative authentication. We use the same devices of the cooperative part, but focus on the server and the robot. In addition, _virtualenv_ is utilized for building the Python 3 virtual environment in two devices, and we use Python 3 to fulfil requirement of some libraries in the area of computer vision. To train and test our model we utilize CUHK01 dataset.
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/tab2.png)
-
-Table 2. Implementation environment of non-cooperative authentication
+Table 1. Implementation environment
 
 ### Ⅱ. Detailed operation
 
-#### **a. Cooperative off-line authentication demo:**
+#### **System experimental demo:**
 
-We can see the implementation of cooperative authentication in the video:
+We have recorded an experimental demo and upload it to the [youtube](https://youtu.be/1yWgYfRGoVs). Now, let's introduce how to build up the system.
 
-[_https://www.youtube.com/watch?v=-cANuZxD9uQ_](https://www.youtube.com/watch?v=-cANuZxD9uQ)
+##### **Step 1** : Prepare work:
 
-##### **Step C1** : Prepare work:
+Set the environment based on Python 3 in Table 1.
 
-Set the environment based on Python 2 in Table 5.a.
+As I met some changes when installing librosa in Ubuntu 18.04 on the robot. So I list the method here:
 
-Use ROS to create a map of the workplace.
+    pip install soundfile
+    
+    sudo apt-get update
+    
+    sudo apt-get install libsndfile1-dev gfortran libatlas-base-dev libopenblas-dev liblapack-dev -y
 
-(see https://emanual.robotis.com/docs/en/platform/turtlebot3/slam/)
+    pip install sndfile
 
-Change the current working directory to &quot;/home/username/Desktop/project&quot; in three terminals.
+    # Building scipy from source takes about 1hr20. Pre-compiled wheels are available 
+    # from piwheels.org, so you can install it from there without building yourself.
+    pip install scipy --extra-index-url https://www.piwheels.org/simple
 
-Put true-client.py in the client.
+    pip install scikit-learn --extra-index-url https://www.piwheels.org/simple
+    
+    #sudo apt-get install llvm
+    # llvm-6.0
+    # LLVM 6.0-41~exp5~ubuntu1, ==> llvmlite 0.23.0~0.26.0 => numba 0.36.2
+    #LLVM_CONFIG=/usr/bin/llvm-config pip install llvmlite==0.26.0 numba==0.41.0
 
-Put true-robot.py in the robot.
+    #First, install llvm-9
+    sudo apt install llvm-9-dev
+    
+    #Then, relink 'llvm-config'
+    sudo ln -s /usr/bin/llvm-config-9 /usr/bin/llvm-config
+    LLVM_CONFIG=/usr/bin/llvm-config pip install llvmlite==0.33.0 numba==0.41.0
 
-Put true-server.py in the server.
+    pip install librosa
 
-##### **Step C2** : Launch ROS and robot equipment:
+##### **Step 2** : Generate training data:
 
-In the server, launch ROS: _roscore_
+Since we use HPC to train and test our model, so we should upload the dataset to the platform. And then process the training data by submitting `./cnn_xgboost/HPC/generate_data.sh` or running script `data_preprocess.py` directly on HPC platform.
 
-In the robot, launch the robot: _roslaunch turtlebot3\_bringup turtlebot3\_robot.launch_
+##### **Step 3** : Train and test model:
 
-##### **Step C3** : Run scripts:
+As the training and tesing datasets are generated, we can submit the jobs to train and test the networks.
+For the CNN-XGBoost hybrid model, we train the CNN first using the bash file `./cnn_xgboost/HPC/train_cnn3.sh`, and then fine tune the XGBoost classifer by submit the job `./cnn_xgboost/HPC/cnn_xgb3_tune.sh`. For the voiceprint identification model, it can be trained using `./speaker_verification_ghostnet/hpc.sh`. We use `./mobilefacenet_sge/hpc.sh` to train the face identification model. All trained models are stored under the folder `model/best`.
 
-Server launches a new terminal and start services: _python true-server.py_
+##### **Step 4** : Run the system:
 
-Robot launches a new terminal and start services: _python true-robot.py_
+Load the Python code to the robot, client, and server, and then run the `robot.py`, `client.py` and `server.py` script respectively. The server should be runned first, because both robot and client need to connect to the server and request messages from it. Figure 3 shows a screen shoot of the experiment.
 
-Next, client sends the request: _python true-client.py_
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig3.png)
 
-As a result, the robot shows &quot;please input Y when robot arrives:&quot;, which means server has received the client&#39;s request and distributed information to the client and the robot.
+Figure 3. run the system
 
-##### **Step C4** : navigation:
+##### **Step 5** : PIN code verification:
 
-Here we make a manual navigation.
+When the authentication process is triggered, the robot will run the PIN code verification. To complete the PIN code verification, the process can be further divided into 6 steps which are shown in Figure 4. The first 3 steps are used to collect and pre-process data. The robot records audio and splits it into segments. Then, convert them to Mel spectrograms. The followed 2 steps are in charge of extracting features using a CNN network, and classifying the features to 10 digit classes using XGBoost classifier. The last step joins the digits together, and check if it is correct.
 
-Server launches a new terminal and insert:
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig3.png)
 
-_export TURTLEBOT3\_MODEL=waffle\_pi_
+Figure 4. Steps of PIN code verification
 
-Then run the command to launch _Rviz_ for navigation:
+##### **Step 6** : Voiceprint verification:
 
-_roslaunch turtlebot3\_navigation turtlebot3\_navigation.launch map\_file:=$HOME/true-map.yaml_
+To complete the voiceprint verification, we can re-use the recorded audio in the previous step. Unlike the previous module, we do not need to split the audio. Here, we use a lightweight network Ghostnet as the feature extractor. It is specially designed for end device. Last, the cosine similarity of the extracted features and the registered features is calculated to determine whether this is the correct customer.
 
-Press &quot;2D Pose Estimate&quot; to correct start position, and &quot;2D Nav Goal&quot; to select aimed destination. Robot plans the path and go there automatically as shown in Fig. 4.
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig5.png)
 
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig4.png)
+Figure 5. PIN code verification and voiceprint verification 
 
-Figure 4. Navigation in the implementation of cooperative authentication
 
-##### **Step C5** : QR code scan:
+##### **Step 7** : Face verification:
 
-Upon arriving the destination, insert &quot;Y&quot; in the robot as a signal of completed navigation. Then, the robot automatically tries to scan QR code shown by the client. The scanning work succeeds and the QR code is authenticated, so the robot shows &quot;matched!&quot; and complete the delivery as shown in Fig. 5 and Fig. 6.
+To finish the face verification, there are 4 major steps: 
+	1. capture a frame from the video stream, 
+	2. detect face using MTCNN network, 
+	3. extract face features via improved MobileFaceNet, and then 
+	4. calculate the cosine similarity to verify the identification.
 
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig5.png)
+In this section, we proposed an improved MobileFaceNet to extract features.
 
-Figure 5. QR code scanning in the implementation of cooperative authentication
+![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig5.png)
 
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig6.png)
-
-Figure 6. Result of QR code scanning in cooperative authentication
-
-#### **b. Cooperative off-line authentication demo:**
-
-This part executes cooperative authentication twice: A failed one before shifting to the non-cooperative part, and the other successful one when the robot recognizes the client and shifts the mode back.
-
-We can see a video of the implementation above:
-
-[_https://www.youtube.com/watch?v=lN5tngrdmds_](https://www.youtube.com/watch?v=lN5tngrdmds)
-
-##### **Step N1:** Prepare work
-
-Do prepare work in Step C1 in the implementation of cooperative authentication.
-
-Set the virtual environment based on Python 3 in Table 5.b.
-
-(see https://code-maven.com/slides/python/virtualev-python3)
-
-Put capture.py and re\_identify\_robot.py in the robot.
-
-Put classify.py, train.py, test\_CMC.py, re\_identify\_prepare.py in the server.
-
-Put dataset (CUHK01) as &quot;/data/CUHK01/campus&quot;.
-
-Next, server activates python3 environment and does pre-processing:
-
-_source ~/venv3/bin/activate_
-
-_python classify.py_
-
-To finish the pre-processing work in the server, put images of the client into &quot;/data/reid\_prepare&quot;, and copy one of them into &quot;/data/reid\_robot&quot; in the robot as the comparison image. Therefore, we have four folders to store dataset:
-
-/data/training\_set: Training set. Stored in the server.
-
-/data/test\_set: Testing set. Stored in the server.
-
-/data/reid\_prepare: All images of the client. Stored in the server.
-
-/data/reid\_robot: An image of the client (a captured photo of pedestrian will be added here later).
-
-##### **Step N2:** Model training
-
-Then, train a model in the server:
-
-_python train.py_
-
-The model is stored as &quot;/net\_test.pth&quot;, and copy it to the robot.
-
-##### **Step N3:** Optional Model testing
-
-Run the code in the server to plot CMC in test1.jpg:
-
-_python test\_CMC.py_
-
-To get the separate line used in the final comparison, run the code in the server:
-
-_python re\_identify\_prepare.py_
-
-##### **Step N4:** Capturing images
-
-Do the cooperative authentication and make the QR code scanning unit fail as shown in Fig. 7
-
-Robots runs:
-
-_python capture.py_
-
-In this way, we successfully captured an image of pedestrian, did pedestrian detection in it, resize the person&#39;s image and stored it in &quot;/data/reid\_robot/&quot;.
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig7.png)
-
-Figure 7. Failed QR code scanning and shifting to non-cooperative mode
-
-##### **Step N5:** Person re-identification
-
-Next, robot runs the command to compare the similarity of the captured image and client&#39;s image in &quot;/data/reid\_robot/&quot;.
-
-_python re\_identify\_robot.py_
-
-If the output is &quot;same person&quot;, robot successfully recognized the client, and the system switches back to cooperative mode as shown in Fig. 8 and Fig. 9.
-
-##### **Step N6:** QR code scanning again
-
-Finally, input any character in the robot&#39;s terminal that runs true-robot.py so it can start to scan the QR code again and match as shown in Fig. 10 and Fig. 11.
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig8.png)
-
-Figure 8. Person detection and re-identification
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig9.png)
-
-Figure 9. Result of person detection and re-identification
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig10.png)
-
-Figure 10. QR code scanning again
-
-![](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping/blob/master/Image/fig11.png)
-
-Figure 11. Result of QR code scanning again
+Figure 6. Face verification
 
 ## **References:**
-[Secure-Robotic-Shipping](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping)
-[PyTorch_Speaker_Verification](https://github.com/HarryVolek/PyTorch_Speaker_Verification)
-[GhostNet](https://github.com/huawei-noah/CV-Backbones)
-[MobileFaceNet_Pytorch](https://github.com/Xiaoccer/MobileFaceNet_Pytorch)
+1. [Secure-Robotic-Shipping](https://github.com/Jiapei-Yang/Secure-Robotic-Shipping)
+2. [PyTorch_Speaker_Verification](https://github.com/HarryVolek/PyTorch_Speaker_Verification)
+3. [GhostNet](https://github.com/huawei-noah/CV-Backbones)
+4. [MobileFaceNet_Pytorch](https://github.com/Xiaoccer/MobileFaceNet_Pytorch)
+5. J. Yang, P. Gope, Y. Cheng, and L. Sun, “Design, analysis and implementation of a smart next generation secure shipping infrastructure using autonomous robot,” Computer Networks, vol. 187, p. 107779, 2021.
+6. K. Han, Y. Wang, Q. Tian, J. Guo, C. Xu, and C. Xu, “Ghostnet: More features from cheap operations,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2020, pp. 1580–1589.
+7. S. Chen, Y. Liu, X. Gao, and Z. Han, “Mobilefacenets: Efficient cnns for accurate real-time face verification on mobile devices,” in Chinese Conference on Biometric Recognition. Springer, 2018, pp. 428–438.
+8. X. Li, X. Hu, and J. Yang, “Spatial group-wise enhance: Improving semantic feature learning in convolutional networks,” arXiv preprint arXiv:1905.09646, 2019.
+9. P. Warden, “Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition,” ArXiv e-prints, Apr. 2018. [Online]. Available: https://arxiv.org/abs/1804.03209 
+10. J. S. Garofolo, “Timit acoustic phonetic continuous speech corpus,” Linguistic Data Consortium, 1993, 1993. 
+11. D. Yi, Z. Lei, S. Liao, and S. Z. Li, “Learning face representation from scratch,” arXiv preprint arXiv:1411.7923, 2014. 
+12. G. B. Huang, M. Mattar, T. Berg, and E. Learned-Miller, “Labeled faces in the wild: A database forstudying face recognition in unconstrained environments,” in Workshop on faces in’Real-Life’Images: detection, alignment, and recognition, 2008.
+13. H. Y. Khdier, W. M. Jasim, and S. A. Aliesawi, “Deep learning algorithms based voiceprint recognition system in noisy environment,” in Journal of Physics: Conference Series, vol. 1804, no. 1. IOP Publishing, 2021, p. 012042.
 
 
 
