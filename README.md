@@ -10,7 +10,7 @@
 
 ## **Brief Introduction:**
 
-**This document is divided into three parts:**
+**This document is divided into two parts:**
 
 1. Explanation of files in project _An AI-driven Secure and Intelligent Robotic Delivery System_.
 
@@ -42,7 +42,8 @@ Figure 2. Details of off-line authentication scheme
 
 This folder is for PIN code recogination in the cooperative authentication of our system.
 
-**generate_train_data.py**: This file generates the pre-converted trainging images for CNN model.
+
+**generate_train_data.py**: This file generates the pre-converted training images for CNN model.
 
 **train_cnn.py**: is used for training the CNN model.
 
@@ -53,13 +54,14 @@ This folder is for PIN code recogination in the cooperative authentication of ou
 - **dataset.py** contains the definition of dataloader, and 
 - **utils.py** is the implementations of util functions.
 
-**HPC**: The bash files in this folder is the scripts used for submit jobs which are runned on the High Performance Computing (HPC) platform in the University of Sheffield.
+**HPC**: The bash files in this folder are the scripts used for submit jobs which are runned on the High Performance Computing (HPC) platform in the University of Sheffield.
 
 **model/best/**: The trained models are stored in this folder.
 
 ### B. speaker_verification_ghostnet
 
 This folder includes implementations of the voiceprint verification in the cooperative module which are used in the proposed scheme.
+
 
 **data_preprocess.py**: is used to process data.
 
@@ -87,6 +89,7 @@ This folder includes implementations of the voiceprint verification in the coope
 
 This folder includes implementations of our system&#39;s non-cooperative authentication. 
 
+
 **eval.py**: evaluates the result of the trained model.
 
 **main.py**: test the face verification submodule.
@@ -102,7 +105,7 @@ This folder contains the basic functions which are used by _train.py_.
 - **model.py**: This is the definition of MobileFaceNet and MobileFaceNet with SGE.
 - **utils.py**: includes the basic help functions used in this modules.
 
-**HPC**: The bash files in this folder is the scripts used for submit jobs which are runned on the High Performance Computing (HPC) platform in the University of Sheffield.
+**HPC**: The bash files in this folder are the scripts used for submit jobs which are runned on the High Performance Computing (HPC) platform in the University of Sheffield.
 
 **model/best/**: The trained models are stored in this folder.
 
@@ -112,9 +115,9 @@ This part introduces the files which are runned on the robot, server and client 
 
 **robot**: This is the main file of the proposed system. All pretrained models are runned on the robot, the implementations of this part follows the flowchar of fig.2.
 
-**server**: is account for training model, collect customer's registed data, etc. The robot can load related data from it.
+**server**: is account for training model, collecting customer's registed data, etc. The robot can load related data from it.
 
-**client**: receive PIN code from the server.
+**client**: receives PIN code from the server.
 
 ## **2. Guidance of system implementation.**
 
@@ -122,7 +125,7 @@ We will introduce the environmental requirements, and how to run the demo.
 
 ### Ⅰ. Environmental requirements:
 
-Table 1 shows the implementation environment of the proposed scheme. We use two laptops as the client and the server, and Turtlebot3 as the robot. Here, a Macbook with MacOS 11.04 is used as a client, we install Ubuntu 18.04 on the server and Ubuntu mate 18.04 on the robot. Ubuntu 18.04 can be download from the [TurtleBot offical website](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/). The ROS we choose melodic, althouth we do not use ROS in out project. This is because the bounded OS supports the 3rd party libraries used in this project. All implementions in the experiment were developed using python based on the pytorch framework.  _virtualenv_ is utilized for building the Python 3 virtual environment in three devices, and the Python version is 3.7. Training and testing were carried out on the High Performance Computing (HPC) platform in the University of Sheffield, running on NVIDIA K80 GPU. The utilized datasets are listed in previous section. 
+Table 1 shows the implementation environment of the proposed scheme. We use two laptops as the client and the server, and Turtlebot3 as the robot. Here, a Macbook with MacOS 11.04 is used as a client, we install Ubuntu 18.04 on the server and Ubuntu 18.04 on the robot which can be download from the [TurtleBot offical website](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/). The ROS we choose melodic, althouth we do not use ROS in out project. This is because the bounded OS supports the 3rd party libraries used in this project. All implementions in the experiment were developed using python based on the pytorch framework.  _virtualenv_ is utilized for building the Python 3 virtual environment in three devices, and the Python version is 3.7. Training and testing were carried out on the High Performance Computing (HPC) platform in the University of Sheffield, running on NVIDIA K80 GPU. The utilized datasets are listed in previous section. 
 
 ![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/tab1.png)
 
@@ -211,6 +214,8 @@ To finish the face verification, there are 4 major steps:
 	4. calculate the cosine similarity to verify the identification.
 
 In this section, we proposed an improved MobileFaceNet to extract features.
+
+The robot will continue to detect and recognize customer’s face from video stream until session has expired or find the customer. The robot will cancel delivery assignment if the session has timeout, otherwise, it will re-run the cooperative online authentication.
 
 ![](https://github.com/Alansdjn/secure-robotic-delivery-system-pub/blob/main/images/fig6.png)
 
